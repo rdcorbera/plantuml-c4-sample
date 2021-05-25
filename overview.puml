@@ -1,0 +1,39 @@
+@startuml Architecture Overview
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include DEVICONS/windows.puml
+!include DEVICONS/android.puml
+!include DEVICONS/unity_small.puml
+!include DEVICONS/webplatform.puml
+!include DEVICONS/google_cloud_platform.puml
+!include FONTAWESOME/users.puml
+
+LAYOUT_WITH_LEGEND()
+
+Person(gamer, "Gamers", "People that play games", $sprite="users")
+
+System(desktopClient, "GodOfWar", "desktop", "Client Desktop", $sprite="windows")
+System(mobileClient, "GodOfWar", "mobile", "Client Mobile", $sprite="android")
+System(ps5Client, "GodOfWar", "console", "Client Console", $sprite="unity_small")
+
+System_Ext(auth0, "Auth0", "authentication", "Authentication Service Provider", $sprite="webplatform")
+
+System(secretQuestPlatform, "Secret Quest Platform", "game platform", "System Platform Services", $sprite="google_cloud_platform")
+
+Rel(gamer, desktopClient, "Uses", "online")
+Rel(gamer, mobileClient, "Uses", "online")
+Rel(gamer, ps5Client, "Uses", "online")
+
+Rel(desktopClient, auth0, "Authenticate", "https")
+Rel(mobileClient, auth0, "Authenticate", "https")
+Rel(ps5Client, auth0, "Authenticate", "https")
+
+Rel(desktopClient, secretQuestPlatform, "Uses", "https")
+Rel(mobileClient, secretQuestPlatform, "Uses", "https")
+Rel(ps5Client, secretQuestPlatform, "Uses", "https")
+
+Rel_Right(secretQuestPlatform, auth0, "Validate token", "https")
+
+@enduml
