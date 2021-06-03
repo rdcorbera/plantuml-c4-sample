@@ -1,0 +1,24 @@
+@startuml Identity System Components
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+
+LAYOUT_WITH_LEGEND()
+
+Container(desktopApp, "GodOfWar", "desktop", "Desktop Client")
+
+System_Boundary(c1, "Secret Quest Platform - Loyalty System") {
+    Container(apiLoyalty, "Loyalty API", "java, springboot", "Loyalty Services")
+    Container(firebase, "Firebase Auth", "firebase, gcp", "Firebase Account Manager")
+    Container(identityPlatform, "Identity Platform", "gcp", "Identity Platform")
+    Container(bcUserManagement, "User Management", "java, springboot", "User Management")
+    ContainerDb(usermanageDatabase, "User Management", "mysql", "Database Users")
+}
+
+Rel(desktopApp, apiLoyalty, "use", "https")
+Rel(firebase, identityPlatform, "use", "https")
+Rel_R(apiLoyalty, firebase, "use", "https")
+Rel(apiLoyalty, bcUserManagement, "use", "https")
+Rel(bcUserManagement, usermanageDatabase, "use", "https")
+
+@enduml
